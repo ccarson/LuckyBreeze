@@ -10,7 +10,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="PurchaseHistoryByItem">
+    <DataSet Name="ItemStandardCosts">
       <Query>
         <DataSourceName>Macola</DataSourceName>
         <QueryParameters>
@@ -54,6 +54,10 @@
           <DataField>item_desc_2</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="loc">
+          <DataField>loc</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="std_cost">
           <DataField>std_cost</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
@@ -69,22 +73,25 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.5in</Width>
+                  <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5in</Width>
+                  <Width>2.75in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5in</Width>
+                  <Width>2.75in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.625in</Width>
+                  <Width>2.75in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.75in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -253,6 +260,40 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Inv Loc</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox18">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -260,7 +301,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>std cost</Value>
+                                  <Value>Std Cost</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -278,7 +319,7 @@
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingRight>4pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
@@ -442,6 +483,39 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="loc">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!loc.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>loc</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <rd:Selected>true</rd:Selected>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="std_cost">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -450,7 +524,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!std_cost.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>0.0000;(0.0000);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -465,7 +541,7 @@
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingRight>4pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
@@ -484,6 +560,7 @@
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -496,11 +573,13 @@
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>PurchaseHistoryByItem</DataSetName>
+            <RepeatRowHeaders>true</RepeatRowHeaders>
+            <FixedRowHeaders>true</FixedRowHeaders>
+            <DataSetName>ItemStandardCosts</DataSetName>
             <Top>0.02778in</Top>
             <Left>0.10678in</Left>
             <Height>0.5in</Height>
-            <Width>10.875in</Width>
+            <Width>12in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -511,7 +590,7 @@
         <Height>0.56125in</Height>
         <Style />
       </Body>
-      <Width>28.20052in</Width>
+      <Width>12.23177in</Width>
       <Page>
         <PageHeader>
           <Height>0.47917in</Height>
@@ -538,7 +617,7 @@
               <rd:DefaultName>textbox1</rd:DefaultName>
               <Left>0.09895in</Left>
               <Height>0.43in</Height>
-              <Width>3.64324in</Width>
+              <Width>3.75783in</Width>
               <Style>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
@@ -562,7 +641,7 @@
               <Top>0.04167in</Top>
               <Left>0.09895in</Left>
               <Height>0in</Height>
-              <Width>26.76824in</Width>
+              <Width>12.00783in</Width>
               <Style>
                 <Border>
                   <Style>Solid</Style>
@@ -596,7 +675,7 @@
               <Top>0.06945in</Top>
               <Left>0.09895in</Left>
               <Height>0.25in</Height>
-              <Width>2.38802in</Width>
+              <Width>3.75783in</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -641,9 +720,9 @@
                 </Paragraph>
               </Paragraphs>
               <Top>0.06945in</Top>
-              <Left>22.70052in</Left>
+              <Left>7.60678in</Left>
               <Height>0.25in</Height>
-              <Width>4.16667in</Width>
+              <Width>4.5in</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -708,13 +787,25 @@
       <Prompt>Receipt Date To:</Prompt>
     </ReportParameter>
     <ReportParameter Name="pOnlyZeroStdCost">
-      <DataType>Boolean</DataType>
+      <DataType>Integer</DataType>
       <DefaultValue>
         <Values>
-          <Value>true</Value>
+          <Value>1</Value>
         </Values>
       </DefaultValue>
-      <Prompt>Only Zero Std Cost:</Prompt>
+      <Prompt>Standard Costs:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>1</Value>
+            <Label>Zero Std Costs Only</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>0</Value>
+            <Label>All Std Costs</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
     </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>

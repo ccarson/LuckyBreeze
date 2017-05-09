@@ -26,6 +26,14 @@
       <FullPath>Inventory Location 803.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
+      <Name>Item Cost Matrix Original.rdl</Name>
+      <FullPath>Item Cost Matrix Original.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
+      <Name>Item Standard Cost.rdl</Name>
+      <FullPath>Item Standard Cost.rdl</FullPath>
+    </ProjectItem>
+    <ProjectItem>
       <Name>Margin Analysis.rdl</Name>
       <FullPath>Margin Analysis.rdl</FullPath>
     </ProjectItem>
@@ -50,8 +58,8 @@
       <FullPath>Work Orders.rdl</FullPath>
     </ProjectItem>
     <ProjectItem>
-      <Name>Item Standard Cost.rdl</Name>
-      <FullPath>Item Standard Cost.rdl</FullPath>
+      <Name>Item Cost Matrix V2.rdl</Name>
+      <FullPath>Item Cost Matrix V2.rdl</FullPath>
     </ProjectItem>
   </Reports>
   <Configurations>
