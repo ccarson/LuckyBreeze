@@ -9,7 +9,9 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Default = Debug|Default
 		DebugLocal|Default = DebugLocal|Default
+		LocalDev|Default = LocalDev|Default
 		Release|Default = Release|Default
+		ServerDev|Default = ServerDev|Default
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.Debug|Default.ActiveCfg = Debug
@@ -17,9 +19,15 @@ Global
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.Debug|Default.Deploy.0 = Debug
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.DebugLocal|Default.ActiveCfg = DebugLocal
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.DebugLocal|Default.Build.0 = DebugLocal
+		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.LocalDev|Default.ActiveCfg = Release
+		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.LocalDev|Default.Build.0 = Release
+		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.LocalDev|Default.Deploy.0 = Release
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.Release|Default.ActiveCfg = Release
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.Release|Default.Build.0 = Release
 		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.Release|Default.Deploy.0 = Release
+		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.ServerDev|Default.ActiveCfg = Release
+		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.ServerDev|Default.Build.0 = Release
+		{62B09AE0-BB36-470B-B861-3F6B6745AD68}.ServerDev|Default.Deploy.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

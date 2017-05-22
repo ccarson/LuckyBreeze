@@ -10,7 +10,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="ItemCostHistory">
+    <DataSet Name="ItemCostMatrixSummary">
       <Query>
         <DataSourceName>Macola</DataSourceName>
         <QueryParameters>
@@ -20,15 +20,18 @@
           <QueryParameter Name="@pItemNumber">
             <Value>=Parameters!pItemNumber.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@pReceiptDateBegin">
-            <Value>=Parameters!pReceiptDateStart.Value</Value>
+          <QueryParameter Name="@pReceiptMonth">
+            <Value>=Parameters!pMonth.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@pReceiptDateEnd">
-            <Value>=Parameters!pReceiptDateTo.Value</Value>
+          <QueryParameter Name="@pReceiptYear">
+            <Value>=Parameters!pYear.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@pCurrentItemsOnly">
+            <Value>=Parameters!pCurrentItemsOnly.Value</Value>
           </QueryParameter>
         </QueryParameters>
         <CommandType>StoredProcedure</CommandType>
-        <CommandText>reports.getItemCostHistory</CommandText>
+        <CommandText>reports.getItemCostMatrixSummary_rev</CommandText>
       </Query>
       <Fields>
         <Field Name="ItemNum">
@@ -42,14 +45,6 @@
         <Field Name="item_desc_2">
           <DataField>item_desc_2</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="POYear">
-          <DataField>POYear</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="POMonth">
-          <DataField>POMonth</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="currTotal">
           <DataField>currTotal</DataField>
@@ -203,12 +198,6 @@
                   <Width>2.25in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.6in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>0.6in</Width>
-                </TablixColumn>
-                <TablixColumn>
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
@@ -323,15 +312,17 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="POYear">
+                        <Textbox Name="StandardCost2">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!POYear.Value</Value>
-                                  <Style />
+                                  <Value>=Fields!StandardCost.Value</Value>
+                                  <Style>
+                                    <Format>#,0.0000;(#,0.0000);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -339,46 +330,20 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>POYear</rd:DefaultName>
+                          <rd:DefaultName>StandardCost</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <LeftBorder>
+                              <Color>Black</Color>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>Black</Color>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="POMonth">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!POMonth.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>POMonth</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingRight>4pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
@@ -395,7 +360,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!currTotal.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -414,6 +381,7 @@
                             <PaddingRight>4pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
+                            <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -429,7 +397,7 @@
                                 <TextRun>
                                   <Value>=Fields!currUnits.Value</Value>
                                   <Style>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0;(#,0);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -461,7 +429,7 @@
                                 <TextRun>
                                   <Value>=Fields!currAvg.Value</Value>
                                   <Style>
-                                    <Format>'$'0.0000;('$'0.0000);'-'</Format>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -496,7 +464,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!oneMonthTotal.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -530,7 +500,7 @@
                                 <TextRun>
                                   <Value>=Fields!oneMonthUnits.Value</Value>
                                   <Style>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0;(#,0);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -562,7 +532,7 @@
                                 <TextRun>
                                   <Value>=Fields!oneMonthAvg.Value</Value>
                                   <Style>
-                                    <Format>'$'0.0000;('$'0.0000);'-'</Format>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -596,7 +566,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!threeMonthTotal.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -630,7 +602,7 @@
                                 <TextRun>
                                   <Value>=Fields!threeMonthUnits.Value</Value>
                                   <Style>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0;(#,0);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -662,7 +634,7 @@
                                 <TextRun>
                                   <Value>=Fields!threeMonthAvg.Value</Value>
                                   <Style>
-                                    <Format>'$'0.0000;('$'0.0000);'-'</Format>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -696,7 +668,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!sixMonthTotal.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -730,7 +704,7 @@
                                 <TextRun>
                                   <Value>=Fields!sixMonthUnits.Value</Value>
                                   <Style>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0;(#,0);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -762,7 +736,7 @@
                                 <TextRun>
                                   <Value>=Fields!sixMonthAvg.Value</Value>
                                   <Style>
-                                    <Format>'$'0.0000;('$'0.0000);'-'</Format>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -796,7 +770,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!oneYearTotal.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -830,7 +806,7 @@
                                 <TextRun>
                                   <Value>=Fields!oneYearUnits.Value</Value>
                                   <Style>
-                                    <Format>0;(0)</Format>
+                                    <Format>#,0;(#,0);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -862,7 +838,7 @@
                                 <TextRun>
                                   <Value>=Fields!oneYearAvg.Value</Value>
                                   <Style>
-                                    <Format>'$'0.0000;('$'0.0000);'-'</Format>
+                                    <Format>'$' #,0.00;('$' #,0.00);'-'</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -878,38 +854,6 @@
                             <RightBorder>
                               <Color>Black</Color>
                             </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>4pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="StandardCost">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!StandardCost.Value</Value>
-                                  <Style>
-                                    <Format>'$'0.0000;('$'0.0000);'-'</Format>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>StandardCost</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>4pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -945,140 +889,14 @@
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>Silver</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox262">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox262</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox263">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox263</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox264">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox264</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox265">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox265</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                        <ColSpan>15</ColSpan>
+                        <ColSpan>18</ColSpan>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
@@ -1095,36 +913,9 @@
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox280">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox280</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell />
+                    <TablixCell />
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
@@ -1273,7 +1064,7 @@
                   <TablixHeader>
                     <Size>0.25in</Size>
                     <CellContents>
-                      <Textbox Name="Textbox37">
+                      <Textbox Name="Textbox62">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
@@ -1284,90 +1075,24 @@
                                 <Style />
                               </TextRun>
                             </TextRuns>
-                            <Style>
-                              <TextAlign>Center</TextAlign>
-                            </Style>
+                            <Style />
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>Textbox37</rd:DefaultName>
+                        <rd:DefaultName>Textbox56</rd:DefaultName>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>LightGrey</BackgroundColor>
-                          <PaddingLeft>2pt</PaddingLeft>
-                          <PaddingRight>2pt</PaddingRight>
-                          <PaddingTop>2pt</PaddingTop>
-                          <PaddingBottom>2pt</PaddingBottom>
-                        </Style>
-                      </Textbox>
-                    </CellContents>
-                  </TablixHeader>
-                  <TablixMembers>
-                    <TablixMember>
-                      <TablixHeader>
-                        <Size>0.25in</Size>
-                        <CellContents>
-                          <Textbox Name="Textbox72">
-                            <CanGrow>true</CanGrow>
-                            <KeepTogether>true</KeepTogether>
-                            <Paragraphs>
-                              <Paragraph>
-                                <TextRuns>
-                                  <TextRun>
-                                    <Value>Year</Value>
-                                    <Style />
-                                  </TextRun>
-                                </TextRuns>
-                                <Style>
-                                  <TextAlign>Center</TextAlign>
-                                </Style>
-                              </Paragraph>
-                            </Paragraphs>
-                            <rd:DefaultName>Textbox72</rd:DefaultName>
-                            <Style>
-                              <Border>
-                                <Color>LightGrey</Color>
-                                <Style>Solid</Style>
-                              </Border>
-                              <PaddingLeft>2pt</PaddingLeft>
-                              <PaddingRight>2pt</PaddingRight>
-                              <PaddingTop>2pt</PaddingTop>
-                              <PaddingBottom>2pt</PaddingBottom>
-                            </Style>
-                          </Textbox>
-                        </CellContents>
-                      </TablixHeader>
-                    </TablixMember>
-                  </TablixMembers>
-                </TablixMember>
-                <TablixMember>
-                  <TablixHeader>
-                    <Size>0.25in</Size>
-                    <CellContents>
-                      <Textbox Name="Textbox38">
-                        <CanGrow>true</CanGrow>
-                        <KeepTogether>true</KeepTogether>
-                        <Paragraphs>
-                          <Paragraph>
-                            <TextRuns>
-                              <TextRun>
-                                <Value />
-                                <Style />
-                              </TextRun>
-                            </TextRuns>
-                            <Style>
-                              <TextAlign>Center</TextAlign>
-                            </Style>
-                          </Paragraph>
-                        </Paragraphs>
-                        <rd:DefaultName>Textbox38</rd:DefaultName>
-                        <Style>
-                          <Border>
-                            <Color>LightGrey</Color>
-                            <Style>Solid</Style>
-                          </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                          </TopBorder>
+                          <LeftBorder>
+                            <Color>Black</Color>
+                          </LeftBorder>
+                          <RightBorder>
+                            <Color>Black</Color>
+                          </RightBorder>
                           <BackgroundColor>LightGrey</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
@@ -1389,21 +1114,25 @@
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Month</Value>
+                                    <Value>Standard Cost</Value>
                                     <Style />
                                   </TextRun>
                                 </TextRuns>
-                                <Style>
-                                  <TextAlign>Center</TextAlign>
-                                </Style>
+                                <Style />
                               </Paragraph>
                             </Paragraphs>
-                            <rd:DefaultName>Textbox63</rd:DefaultName>
+                            <rd:DefaultName>Textbox54</rd:DefaultName>
                             <Style>
                               <Border>
                                 <Color>LightGrey</Color>
                                 <Style>Solid</Style>
                               </Border>
+                              <LeftBorder>
+                                <Color>Black</Color>
+                              </LeftBorder>
+                              <RightBorder>
+                                <Color>Black</Color>
+                              </RightBorder>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -2200,74 +1929,6 @@
                     </TablixMember>
                   </TablixMembers>
                 </TablixMember>
-                <TablixMember>
-                  <TablixHeader>
-                    <Size>0.25in</Size>
-                    <CellContents>
-                      <Textbox Name="Textbox56">
-                        <CanGrow>true</CanGrow>
-                        <KeepTogether>true</KeepTogether>
-                        <Paragraphs>
-                          <Paragraph>
-                            <TextRuns>
-                              <TextRun>
-                                <Value />
-                                <Style />
-                              </TextRun>
-                            </TextRuns>
-                            <Style />
-                          </Paragraph>
-                        </Paragraphs>
-                        <rd:DefaultName>Textbox56</rd:DefaultName>
-                        <Style>
-                          <Border>
-                            <Color>LightGrey</Color>
-                            <Style>Solid</Style>
-                          </Border>
-                          <PaddingLeft>2pt</PaddingLeft>
-                          <PaddingRight>2pt</PaddingRight>
-                          <PaddingTop>2pt</PaddingTop>
-                          <PaddingBottom>2pt</PaddingBottom>
-                        </Style>
-                      </Textbox>
-                    </CellContents>
-                  </TablixHeader>
-                  <TablixMembers>
-                    <TablixMember>
-                      <TablixHeader>
-                        <Size>0.25in</Size>
-                        <CellContents>
-                          <Textbox Name="Textbox54">
-                            <CanGrow>true</CanGrow>
-                            <KeepTogether>true</KeepTogether>
-                            <Paragraphs>
-                              <Paragraph>
-                                <TextRuns>
-                                  <TextRun>
-                                    <Value>Standard Cost</Value>
-                                    <Style />
-                                  </TextRun>
-                                </TextRuns>
-                                <Style />
-                              </Paragraph>
-                            </Paragraphs>
-                            <rd:DefaultName>Textbox54</rd:DefaultName>
-                            <Style>
-                              <Border>
-                                <Color>LightGrey</Color>
-                                <Style>Solid</Style>
-                              </Border>
-                              <PaddingLeft>2pt</PaddingLeft>
-                              <PaddingRight>2pt</PaddingRight>
-                              <PaddingTop>2pt</PaddingTop>
-                              <PaddingBottom>2pt</PaddingBottom>
-                            </Style>
-                          </Textbox>
-                        </CellContents>
-                      </TablixHeader>
-                    </TablixMember>
-                  </TablixMembers>
-                </TablixMember>
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -2292,6 +1953,17 @@
                           </Paragraph>
                         </Paragraphs>
                         <rd:DefaultName>ItemNum</rd:DefaultName>
+                        <ActionInfo>
+                          <Actions>
+                            <Action>
+                              <Hyperlink>="javascript:void(window.open('" + Variables!gItemCostMatrixDetail.Value + "&amp;rs:Command=Render" + 
+	"&amp;pItemNumber=" + Code.URLEncode( Fields!ItemNum.Value ) + 
+	"&amp;pVendorNumber=( all )" + 
+	"&amp;pReceiptDateStart=2015-01-01" + 
+	"&amp;pReceiptDateTo=" + Code.URLEncode( Parameters!pEndOfCurrentMonth.Value ) + "'))"</Hyperlink>
+                            </Action>
+                          </Actions>
+                        </ActionInfo>
                         <Style>
                           <Border>
                             <Color>LightGrey</Color>
@@ -2330,6 +2002,7 @@
                             <Color>LightGrey</Color>
                             <Style>Solid</Style>
                           </Border>
+                          <BackgroundColor>Silver</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -2342,11 +2015,11 @@
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>ItemCostHistory</DataSetName>
-            <Top>0.05556in</Top>
+            <DataSetName>ItemCostMatrixSummary</DataSetName>
+            <Top>0.04862in</Top>
             <Left>0.09895in</Left>
             <Height>0.82292in</Height>
-            <Width>22.7in</Width>
+            <Width>21.5in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2354,7 +2027,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.05556in</Height>
+        <Height>0.94098in</Height>
         <Style />
       </Body>
       <Width>22.79895in</Width>
@@ -2371,7 +2044,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Item Cost History</Value>
+                      <Value>Item Cost Matrix Summary</Value>
                       <Style>
                         <FontSize>20pt</FontSize>
                         <FontWeight>Bold</FontWeight>
@@ -2384,7 +2057,7 @@
               <rd:DefaultName>textbox1</rd:DefaultName>
               <Left>0.09895in</Left>
               <Height>0.43in</Height>
-              <Width>3.25in</Width>
+              <Width>5.5in</Width>
               <Style>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
@@ -2400,22 +2073,10 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.41667in</Height>
+          <Height>0.46875in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
-            <Line Name="Line3">
-              <Top>0.04167in</Top>
-              <Left>0.09895in</Left>
-              <Height>0in</Height>
-              <Width>12.00783in</Width>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                  <Width>0.5pt</Width>
-                </Border>
-              </Style>
-            </Line>
             <Textbox Name="lblFooter01">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -2439,11 +2100,10 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>0.06945in</Top>
+              <Top>0.13195in</Top>
               <Left>0.09895in</Left>
               <Height>0.25in</Height>
               <Width>3.25in</Width>
-              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2486,11 +2146,11 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.06945in</Top>
-              <Left>18.54895in</Left>
+              <Top>0.13195in</Top>
+              <Left>17.59895in</Left>
               <Height>0.25in</Height>
               <Width>4in</Width>
-              <ZIndex>2</ZIndex>
+              <ZIndex>1</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2501,6 +2161,19 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
+            <Line Name="Line3">
+              <Top>0.05556in</Top>
+              <Left>0.09895in</Left>
+              <Height>0in</Height>
+              <Width>21.5in</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>Solid</Style>
+                  <Width>0.5pt</Width>
+                </Border>
+              </Style>
+            </Line>
           </ReportItems>
           <Style>
             <Border>
@@ -2526,15 +2199,6 @@
       </DefaultValue>
       <Prompt>Vendor(s):</Prompt>
     </ReportParameter>
-    <ReportParameter Name="pReceiptDateStart">
-      <DataType>DateTime</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>2015-01-01 00:00:00</Value>
-        </Values>
-      </DefaultValue>
-      <Prompt>Receipt Date From:</Prompt>
-    </ReportParameter>
     <ReportParameter Name="pItemNumber">
       <DataType>String</DataType>
       <DefaultValue>
@@ -2544,20 +2208,130 @@
       </DefaultValue>
       <Prompt>Item Number(s):</Prompt>
     </ReportParameter>
-    <ReportParameter Name="pReceiptDateTo">
-      <DataType>DateTime</DataType>
+    <ReportParameter Name="pMonth">
+      <DataType>Integer</DataType>
       <DefaultValue>
         <Values>
-          <Value>=Today()</Value>
+          <Value>=MONTH(Now)</Value>
         </Values>
       </DefaultValue>
-      <Prompt>Receipt Date To:</Prompt>
+      <Prompt>PO Month:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>1</Value>
+            <Label>January</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>2</Value>
+            <Label>February</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>3</Value>
+            <Label>March</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>4</Value>
+            <Label>April</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>5</Value>
+            <Label>May</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>6</Value>
+            <Label>June</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>7</Value>
+            <Label>July</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>8</Value>
+            <Label>August</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>9</Value>
+            <Label>September</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>10</Value>
+            <Label>October</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>11</Value>
+            <Label>November</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>12</Value>
+            <Label>December</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="pYear">
+      <DataType>Integer</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=YEAR(Now)</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>PO Year:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>2015</Value>
+            <Label>2015</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>2016</Value>
+            <Label>2016</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>2017</Value>
+            <Label>2017</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>2018</Value>
+            <Label>2018</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="pEndOfCurrentMonth">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>=DateAdd( DateInterval.Day
+       , -1
+	   , DateAdd( DateInterval.Month
+	            , 1
+				, DateValue( Parameters!pYear.Value.ToString + "-" + Parameters!pMonth.Value.ToString + "-01" ) ) ).ToShortDateString</Value>
+        </Values>
+      </DefaultValue>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+    <ReportParameter Name="pCurrentItemsOnly">
+      <DataType>String</DataType>
+      <Prompt>Only Current Items:</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>Y</Value>
+            <Label>Yes</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>N</Value>
+            <Label>No, Show All Items</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
     </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2565,24 +2339,48 @@
           <ParameterName>pVendorNumber</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>0</ColumnIndex>
-          <RowIndex>1</RowIndex>
-          <ParameterName>pReceiptDateStart</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>pItemNumber</ParameterName>
         </CellDefinition>
         <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>pMonth</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>1</RowIndex>
-          <ParameterName>pReceiptDateTo</ParameterName>
+          <ParameterName>pYear</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>pEndOfCurrentMonth</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>pCurrentItemsOnly</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>Public Function URLEncode (ByVal inURL As String) As String
+Dim outURL As String
+outURL = System.Uri.EscapeUriString(inURL).ToString
+Return outURL
+End Function
+</Code>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="gThisReport">
+      <Value>=Globals!ReportServerUrl + "?" + Code.URLEncode(Globals!ReportFolder + "/" + Globals!ReportName)</Value>
+    </Variable>
+    <Variable Name="gItemCostMatrixDetail">
+      <Value>=Globals!ReportServerUrl + "?" + Code.URLEncode(Globals!ReportFolder + "/" + "Item Cost Matrix Detail")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>a2cc4572-406d-4a5d-8b12-0825120d489b</rd:ReportID>
