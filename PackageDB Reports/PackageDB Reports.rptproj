@@ -64,20 +64,20 @@
   </Reports>
   <Configurations>
     <Configuration>
-      <Name>Debug</Name>
+      <Name>ServerDev</Name>
       <Platform>Win32</Platform>
       <Options>
-        <OutputPath>bin\Debug</OutputPath>
+        <OutputPath>bin\ServerDev</OutputPath>
         <TargetServerVersion>SSRS2008R2</TargetServerVersion>
-        <TargetServerURL>http://ca-unua/reportserver/</TargetServerURL>
-        <TargetFolder>Dev/PackageDB</TargetFolder>
+        <TargetServerURL>http://sql1.starlume.local/reportserver</TargetServerURL>
+        <TargetFolder>Dev/PackageDB Reports</TargetFolder>
         <TargetDataSourceFolder>Dev/Data Sources</TargetDataSourceFolder>
         <TargetDatasetFolder>Dev/Datasets</TargetDatasetFolder>
         <TargetReportPartFolder>Dev/Report Parts</TargetReportPartFolder>
       </Options>
     </Configuration>
     <Configuration>
-      <Name>DebugLocal</Name>
+      <Name>Local</Name>
       <Platform>Win32</Platform>
       <Options>
         <OutputPath>bin\DebugLocal</OutputPath>

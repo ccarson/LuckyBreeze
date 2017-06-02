@@ -833,6 +833,32 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
+            <Line Name="Line4">
+              <Top>0.43166in</Top>
+              <Left>0.11718in</Left>
+              <Height>0in</Height>
+              <Width>15.16407in</Width>
+              <ZIndex>2</ZIndex>
+              <Style>
+                <Border>
+                  <Style>Solid</Style>
+                  <Width>0.5pt</Width>
+                </Border>
+              </Style>
+            </Line>
+            <Line Name="Line5">
+              <Top>0.74389in</Top>
+              <Left>0.11718in</Left>
+              <Height>0in</Height>
+              <Width>15.28125in</Width>
+              <ZIndex>3</ZIndex>
+              <Style>
+                <Border>
+                  <Style>Solid</Style>
+                  <Width>0.5pt</Width>
+                </Border>
+              </Style>
+            </Line>
           </ReportItems>
           <Style>
             <Border>
@@ -841,12 +867,12 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.4375in</Height>
+          <Height>0.41667in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Line Name="Line3">
-              <Top>0.05556in</Top>
+              <Top>0.01806in</Top>
               <Left>0.11718in</Left>
               <Height>0in</Height>
               <Width>15.28125in</Width>
@@ -880,10 +906,10 @@
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>0.08334in</Top>
+              <Top>0.05834in</Top>
               <Left>0.11718in</Left>
               <Height>0.25in</Height>
-              <Width>2.9375in</Width>
+              <Width>3.16667in</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -927,10 +953,10 @@
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Top>0.08334in</Top>
-              <Left>12.46093in</Left>
+              <Top>0.05834in</Top>
+              <Left>11.65885in</Left>
               <Height>0.25in</Height>
-              <Width>2.9375in</Width>
+              <Width>3.73958in</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
